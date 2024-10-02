@@ -1,14 +1,14 @@
-import './App.css'
-import { RecipeFinder } from './components/RecipeFinder/RecipeFinder'
+import "./App.css";
+import { RecipeCard } from "./components/RecipeCard/RecipeCard";
+import { RecipeFinder } from "./components/RecipeFinder/RecipeFinder";
 
 function App() {
-
   return (
     <div className="App">
-      <RecipeFinder/>
-
+      <RecipeFinder />
+      <RecipeCard />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

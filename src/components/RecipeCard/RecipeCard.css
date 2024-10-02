@@ -1,0 +1,40 @@
+.card {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  padding: 16px;
+  width: 400px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.recipe-info {
+  margin-right: auto;
+}
+
+.recipe-title {
+  color: black;
+  margin: 0;
+}
+
+.recipe-duration {
+  color: black;
+  margin: auto;
+}
+
+.image {
+  width: 88px;
+  height: 88px;
+  object-fit: fill;
+  margin-right: 16px;
+  background-color: #e3e3e3;
+}
+
+.heart-icon {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  color: #65558f;
+  cursor: pointer;
+}
