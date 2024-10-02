@@ -1,0 +1,14 @@
+.search{
+    width:400px;
+    height:40px;
+    border-radius:20px;
+    background-color: #FFFFFF;
+    border-color: #D9D9D9;
+    color:black
+}
+.search-icon{
+    color: #e31313;
+}
+.search-container{
+    position:'relative';
+}
