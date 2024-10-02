@@ -34,7 +34,7 @@ export const RecipeFinder = () => {
         onChange={(e) => setQuery(e.target.value)}
       />
 
-      <i className="bi bi-search search-icon" onClick={handleSearch}></i>
+      <i className="bi bi-search search-icon" onClick={handleSearch} />
 
       {isLoading && <p>Loading...</p>}
 
