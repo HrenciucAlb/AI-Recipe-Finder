@@ -3,12 +3,12 @@ import Groq from "groq-sdk";
 const apiKey = "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";
 const groq = new Groq({ apiKey: apiKey, dangerouslyAllowBrowser: true });
 
-export async function getGroqChatCompletion(prompt) {
-  return groq.chat.completions.create({
+export async function getGroqChatCompletion(search, prompt) {
+  const response = await groq.chat.completions.create({
     messages: [
       {
         role: "system",
-        content: "You give at least 5 food recipes but brief",
+        content: search,
       },
       {
         role: "user",
@@ -17,4 +17,10 @@ export async function getGroqChatCompletion(prompt) {
     ],
     model: "llama3-8b-8192",
   });
+
+  const content = response.choices?.[0]?.message?.content || "";
+
+  const recipes = content.split(",").map((recipe) => recipe.trim());
+
+  return recipes.length == 5 ? recipes : content;
 }
