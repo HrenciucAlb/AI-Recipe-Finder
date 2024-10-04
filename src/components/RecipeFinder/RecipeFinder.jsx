@@ -171,7 +171,7 @@ export const RecipeFinder = () => {
               {/* Show Favorites when search hasn't been triggered yet (showSuggestions is false) */}
               {!showSuggestions && favorites.length > 0 && (
                 <div style={{ marginTop: "20px" }}>
-                  <h1 style={{ color: "black" }}>Favorites</h1>
+                  <h1 className="title">Favorites</h1>
                   {favorites.map((recipe, index) => (
                     <RecipeCard
                       key={index}
@@ -188,7 +188,7 @@ export const RecipeFinder = () => {
               {/* Show suggested recipes only when search is clicked */}
               {showSuggestions && !isLoading && recipes.length > 0 && (
                 <div style={{ marginTop: "20px" }}>
-                  <h1 style={{ color: "black" }}>Suggested recipes</h1>
+                  <h1 className="title">Suggested recipes</h1>
                   {recipes.map((recipe, index) => (
                     <RecipeCard
                       key={index}
