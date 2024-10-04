@@ -19,7 +19,7 @@ export const RecipeCard = ({
       <img src={recipeImage} className="image" />
       <div className="recipe-info">
         <h2 className="recipe-title">{title}</h2>
-        <h4 className="recipe-duration">{duration}</h4>
+        <p className="recipe-duration">{duration}</p>
       </div>
       <i
         className={`bi bi-heart${isFavorite ? "-fill" : ""} heart-icon`}

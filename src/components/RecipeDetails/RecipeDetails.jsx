@@ -3,6 +3,7 @@ import "./RecipeDetails.css";
 import { getGroqChatCompletion } from "../../../groqAI";
 import { getIngredients } from "../../../constants";
 import recipeImage from "../../assets/image.png";
+import Skeleton from "react-loading-skeleton";
 
 export const RecipeDetails = ({
   recipe,
@@ -50,7 +51,7 @@ export const RecipeDetails = ({
         Back to Recipes
       </button>
       {isLoading ? (
-        <p>Loading recipe details...</p>
+        <Skeleton className="skeleton-details" />
       ) : error ? (
         <p className="error">{error}</p>
       ) : (
@@ -58,12 +59,16 @@ export const RecipeDetails = ({
           <div className="recipe-content">
             <div className="recipe-left">
               <img src={recipeImage} alt={recipe} className="recipe-image" />
-              <h2 className="recipe-name">{recipe}</h2>
-              <h4 className="recipe-duration">{duration}</h4>
-              <i
-                className={`bi bi-heart${isFilled ? "-fill" : ""} heart-icon`}
-                onClick={handleHeartClick}
-              ></i>
+              <div className="recipe-left-box">
+                <div className="recipe-info">
+                  <h2 className="recipe-name">{recipe}</h2>
+                  <h4 className="recipe-duration">{duration}</h4>
+                </div>
+                <i
+                  className={`bi bi-heart${isFilled ? "-fill" : ""} heart-icon`}
+                  onClick={handleHeartClick}
+                ></i>
+              </div>
             </div>
             <div className="recipe-right">{recipeDetails}</div>
           </div>
