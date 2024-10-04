@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import "./RecipeFinder.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { getGroqChatCompletion } from "../../../groqAI";
@@ -153,49 +155,61 @@ export const RecipeFinder = () => {
             )}
           </div>
 
-          {isLoading && <p>Loading...</p>}
-          {error && <p className="error">{error}</p>}
-
-          {/* Show Favorites when search hasn't been triggered yet (showSuggestions is false) */}
-          {!showSuggestions && favorites.length > 0 && (
-            <div style={{ marginTop: "20px" }}>
-              <h1 style={{ color: "black" }}>Favorites</h1>
-              {favorites.map((recipe, index) => (
-                <RecipeCard
-                  key={index}
-                  title={recipe}
-                  isFavorite={true}
-                  duration={favoriteDurations[recipe]}
-                  onToggleFavorite={handleToggleFavorite}
-                  onCardClick={() => handleCardClick(recipe)}
-                />
-              ))}
-            </div>
-          )}
-
-          {/* Show suggested recipes only when search is clicked */}
-          {showSuggestions && !isLoading && recipes.length > 0 && (
-            <div style={{ marginTop: "20px" }}>
+          {isLoading ? (
+            <div className="skeleton-cards">
               <h1 style={{ color: "black" }}>Suggested recipes</h1>
-              {recipes.map((recipe, index) => (
-                <RecipeCard
-                  key={index}
-                  title={recipe}
-                  isFavorite={isFavorite(recipe)}
-                  duration={searchDurations[recipe]}
-                  onToggleFavorite={handleToggleFavorite}
-                  onCardClick={() => handleCardClick(recipe)}
-                />
+              {[...Array(5)].map((_, index) => (
+                <div key={index} className="skeleton-card">
+                  <Skeleton className="skeleton" />
+                </div>
               ))}
-              <div className="new-recipes-button-box">
-                <button
-                  className="new-recipes-button"
-                  onClick={handleNewRecipes}
-                >
-                  I don't like these
-                </button>
-              </div>
             </div>
+          ) : (
+            <>
+              {error && <p className="error">{error}</p>}
+
+              {/* Show Favorites when search hasn't been triggered yet (showSuggestions is false) */}
+              {!showSuggestions && favorites.length > 0 && (
+                <div style={{ marginTop: "20px" }}>
+                  <h1 style={{ color: "black" }}>Favorites</h1>
+                  {favorites.map((recipe, index) => (
+                    <RecipeCard
+                      key={index}
+                      title={recipe}
+                      isFavorite={true}
+                      duration={favoriteDurations[recipe]}
+                      onToggleFavorite={handleToggleFavorite}
+                      onCardClick={() => handleCardClick(recipe)}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* Show suggested recipes only when search is clicked */}
+              {showSuggestions && !isLoading && recipes.length > 0 && (
+                <div style={{ marginTop: "20px" }}>
+                  <h1 style={{ color: "black" }}>Suggested recipes</h1>
+                  {recipes.map((recipe, index) => (
+                    <RecipeCard
+                      key={index}
+                      title={recipe}
+                      isFavorite={isFavorite(recipe)}
+                      duration={searchDurations[recipe]}
+                      onToggleFavorite={handleToggleFavorite}
+                      onCardClick={() => handleCardClick(recipe)}
+                    />
+                  ))}
+                  <div className="new-recipes-button-box">
+                    <button
+                      className="new-recipes-button"
+                      onClick={handleNewRecipes}
+                    >
+                      I don't like these
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </>
       )}

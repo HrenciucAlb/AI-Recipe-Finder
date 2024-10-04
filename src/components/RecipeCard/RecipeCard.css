@@ -21,6 +21,8 @@
 .recipe-duration {
   color: black;
   margin: auto;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .image {
