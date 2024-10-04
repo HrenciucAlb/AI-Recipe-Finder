@@ -13,3 +13,15 @@
 .search-container {
   position: "relative";
 }
+
+.new-recipes-button-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.new-recipes-button {
+  width: 180px;
+  height: 48px;
+  background-color: #65558f;
+  cursor: pointer;
+}

@@ -20,6 +20,8 @@ export async function getGroqChatCompletion(search, prompt) {
 
   const content = response.choices?.[0]?.message?.content || "";
 
+  console.log(content);
+
   const recipes = content.split(",").map((recipe) => recipe.trim());
 
   return recipes.length == 5 ? recipes : content;
