@@ -3,12 +3,14 @@ import "./RecipeFinder.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { getGroqChatCompletion } from "../../../groqAI";
 import { RecipeCard } from "../RecipeCard/RecipeCard";
-import { getRecipes } from "../../../constants";
+import { getRecipes, getDuration } from "../../../constants";
 import { RecipeDetails } from "../RecipeDetails/RecipeDetails";
 
 export const RecipeFinder = () => {
   const [query, setQuery] = useState("");
   const [recipes, setRecipes] = useState([]);
+  const [searchDurations, setSearchDurations] = useState({});
+  const [favoriteDurations, setFavoriteDurations] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -16,19 +18,54 @@ export const RecipeFinder = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchCall = getRecipes;
 
+  const fetchDurationsForRecipes = async (recipes, type = "search") => {
+    try {
+      const durationsArray = await getGroqChatCompletion(
+        getDuration,
+        recipes.join(",")
+      );
+
+      const durationsMap = {};
+      recipes.forEach((recipe, index) => {
+        const duration = durationsArray[index] || "Unknown duration";
+        durationsMap[recipe] = duration;
+      });
+
+      if (type === "search") {
+        setSearchDurations((prev) => ({ ...prev, ...durationsMap }));
+      } else if (type === "favorite") {
+        setFavoriteDurations((prev) => ({ ...prev, ...durationsMap }));
+      }
+    } catch (error) {
+      console.error("Error fetching durations:", error);
+      setError("Failed to fetch recipe durations.");
+    }
+  };
+
   const handleSearch = async (newSearch = false) => {
     if (!query && !newSearch) return;
     setIsLoading(true);
     setError("");
     setShowSuggestions(true);
+
     try {
       const parsedRecipes = await getGroqChatCompletion(searchCall, query);
       setRecipes(parsedRecipes);
+
+      if (parsedRecipes.length > 0) {
+        await fetchDurationsForRecipes(parsedRecipes, "search");
+      }
     } catch (error) {
       console.error("Error fetching response:", error);
       setError("Failed to get a response.");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const fetchDurationsForFavorites = async (favoritesList) => {
+    if (favoritesList.length > 0) {
+      await fetchDurationsForRecipes(favoritesList, "favorite");
     }
   };
 
@@ -39,6 +76,10 @@ export const RecipeFinder = () => {
 
     setFavorites(updatedFavorites);
     localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+
+    if (!favoriteDurations[recipe]) {
+      fetchDurationsForRecipes([recipe], "favorite");
+    }
   };
 
   const isFavorite = (recipe) => favorites.includes(recipe);
@@ -54,15 +95,17 @@ export const RecipeFinder = () => {
   const handleClearSearch = () => {
     setQuery("");
     setRecipes([]);
+    setSearchDurations({});
     setShowSuggestions(false);
   };
 
-  // Load favorites from localStorage on component mount
   useEffect(() => {
     const savedFavorites = localStorage.getItem("favorites");
     if (savedFavorites) {
       try {
-        setFavorites(JSON.parse(savedFavorites));
+        const parsedFavorites = JSON.parse(savedFavorites);
+        setFavorites(parsedFavorites);
+        fetchDurationsForFavorites(parsedFavorites);
       } catch (e) {
         console.error("Failed to parse favorites from localStorage:", e);
         setFavorites([]);
@@ -79,6 +122,9 @@ export const RecipeFinder = () => {
       {selectedRecipe ? (
         <RecipeDetails
           recipe={selectedRecipe}
+          duration={
+            searchDurations[selectedRecipe] || favoriteDurations[selectedRecipe]
+          }
           onBack={handleBackToResults}
           isFavorite={isFavorite(selectedRecipe)}
           onToggleFavorite={handleToggleFavorite}
@@ -119,6 +165,7 @@ export const RecipeFinder = () => {
                   key={index}
                   title={recipe}
                   isFavorite={true}
+                  duration={favoriteDurations[recipe]}
                   onToggleFavorite={handleToggleFavorite}
                   onCardClick={() => handleCardClick(recipe)}
                 />
@@ -135,6 +182,7 @@ export const RecipeFinder = () => {
                   key={index}
                   title={recipe}
                   isFavorite={isFavorite(recipe)}
+                  duration={searchDurations[recipe]}
                   onToggleFavorite={handleToggleFavorite}
                   onCardClick={() => handleCardClick(recipe)}
                 />

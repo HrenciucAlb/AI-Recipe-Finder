@@ -9,7 +9,7 @@
   align-self: flex-start;
   padding: 10px 20px;
   margin-bottom: 20px;
-  background-color: #ddd;
+  background-color: #65558f;
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -65,6 +65,10 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   white-space: pre-wrap;
+}
+
+.recipe-duration {
+  color: black;
 }
 
 h3 {

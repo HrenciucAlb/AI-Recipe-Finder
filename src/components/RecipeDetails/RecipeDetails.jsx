@@ -7,6 +7,7 @@ import recipeImage from "../../assets/image.png";
 export const RecipeDetails = ({
   recipe,
   onBack,
+  duration,
   isFavorite,
   onToggleFavorite,
 }) => {
@@ -21,7 +22,11 @@ export const RecipeDetails = ({
       setIsLoading(true);
       setError("");
       try {
-        const details = await getGroqChatCompletion(getIngredients, recipe);
+        const details = await getGroqChatCompletion(
+          getIngredients,
+          recipe,
+          false
+        );
         setRecipeDetails(details);
       } catch (error) {
         console.error("Error fetching recipe details:", error);
@@ -54,6 +59,7 @@ export const RecipeDetails = ({
             <div className="recipe-left">
               <img src={recipeImage} alt={recipe} className="recipe-image" />
               <h2 className="recipe-name">{recipe}</h2>
+              <h4 className="recipe-duration">{duration}</h4>
               <i
                 className={`bi bi-heart${isFilled ? "-fill" : ""} heart-icon`}
                 onClick={handleHeartClick}
