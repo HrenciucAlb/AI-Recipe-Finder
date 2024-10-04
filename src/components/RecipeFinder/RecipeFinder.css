@@ -3,11 +3,26 @@
   height: 40px;
   border-radius: 20px;
   background-color: #ffffff;
-  border-color: #d9d9d9;
+  border-left: #d9d9d9;
+  border-top: #d9d9d9;
+  border-bottom: #d9d9d9;
+  border-right: #d9d9d9;
   color: black;
   padding-left: 15px;
 }
+
+.search-bar {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
 .search-icon {
+  position: absolute;
+  top: 50%;
+  right: 1px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 20px;
   color: #1e1e1e;
 }
 .search-container {
@@ -24,4 +39,11 @@
   height: 48px;
   background-color: #65558f;
   cursor: pointer;
+}
+
+.recipe-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
 }
