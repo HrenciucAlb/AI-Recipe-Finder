@@ -4,10 +4,15 @@ import { getGroqChatCompletion } from "../../../groqAI";
 import { getIngredients } from "../../../constants";
 import recipeImage from "../../assets/image.png";
 
-export const RecipeDetails = ({ recipe, onBack }) => {
+export const RecipeDetails = ({
+  recipe,
+  onBack,
+  isFavorite,
+  onToggleFavorite,
+}) => {
   const [recipeDetails, setRecipeDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [isFilled, setIsFilled] = useState(false);
+  const [isFilled, setIsFilled] = useState(isFavorite);
 
   const [error, setError] = useState("");
 
@@ -31,6 +36,7 @@ export const RecipeDetails = ({ recipe, onBack }) => {
 
   const handleHeartClick = () => {
     setIsFilled(!isFilled);
+    onToggleFavorite(recipe);
   };
 
   return (
